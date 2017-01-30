@@ -1,15 +1,32 @@
-## Put comments here that give an overall description of what your
-## functions do
+## Thank you, fellows! I tried a lot. Hope you'll find in readable.
 
-## Write a short comment describing this function
+## In a whole the structure like in R. Peng's functions. But these two functions create inverse matrices for input matrices which are being 
+## constructed from the input vectors. Fitstly four functions appear.
 
-makeCacheMatrix <- function(x = matrix()) {
-
+makeMatrix <- function(x = integer()) {
+    m <- NULL
+    set <- function(y) {
+        x <<- matrix(y, nrow=sqrt(length(y)), ncol=sqrt(length(y)))
+        m <<- NULL
+    }
+    get <- function() matrix(x, nrow=sqrt(length(x)), ncol=sqrt(length(x)))
+    setinverse <- function(solve) m <<- solve
+    getinverse <- function() m
+    list(set = set, get = get,
+         setinverse = setinverse,
+         getinverse = getinverse)
 }
+            
+## Here we take one of those functions and create inverse matrix if initially it wasn't empty.
 
-
-## Write a short comment describing this function
-
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+cacheinverse <- function(x, ...) {
+    m <- x$getinverse()
+    if(!is.null(m)) {
+        message("getting cached data")
+        return(m)
+    }
+    data <- x$get()
+    m <- solve(data, ...)
+    x$setinverse(m)
+    m
 }
